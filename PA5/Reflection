@@ -1,0 +1,12 @@
+What I've learned from doing the project? 
+- This project was very challenging. I learned quite a lot about how copying from one picture to another works. I also learned
+about the idea of green screen and its working. By locating a specific pixel and retrieve its level of greeness(?) we will be 
+able to then change the color of that pixel by copying from another pixel.
+
+What were the obstacles that I've encountered while coding for this assignment? 
+- keeping track with the pixels of two different pictures at the same time was quite challenging mainly because there are
+specific patches that we needed to change. 
+
+Note to future Warren (lol)
+- this operation of using green screen and applying different picture onto the green screen is cool. You can look more into 
+how movies do what they do.
