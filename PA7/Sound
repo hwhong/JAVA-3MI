@@ -1,0 +1,150 @@
+public class Sound extends SimpleSound
+{
+  
+  /////////////// consructors ////////////////////////////////////
+  
+  /**
+   * Constructor that takes a file name
+   * @param fileName the name of the file to read the sound from
+   */
+  public Sound(String fileName)
+  {
+    // let the parent class handle setting the file name
+    super(fileName);
+  }
+  
+  /**
+   * Constructor that takes the number of samples in
+   * the sound
+   * @param numSamples the number of samples desired
+   */
+  public Sound (int numSamples)
+  {
+    // let the parent class handle this
+    super(numSamples);
+  }
+  
+  /**
+   * Constructor that takes the number of samples that this
+   * sound will have and the sample rate
+   * @param numSamples the number of samples desired
+   * @param sampleRate the number of samples per second
+   */
+  public Sound (int numSamples, int sampleRate)
+  {
+    // let the parent class handle this
+    super(numSamples,sampleRate);
+  }
+  
+  /**
+   * Constructor that takes a sound to copy
+   */
+  public Sound (Sound copySound)
+  {
+    // let the parent class handle this
+    super(copySound);
+  }
+  
+  ////////////////// methods ////////////////////////////////////
+  
+  /**
+   * Method to return the string representation of this sound
+   * @return a string with information about this sound
+   */
+  public String toString()
+  {
+    String output = "Sound";
+    String fileName = getFileName();
+    
+    // if there is a file name then add that to the output
+    if (fileName != null)
+      output = output + " file: " + fileName;
+    
+    // add the length in frames
+    output = output + " number of samples: " + getLengthInFrames();
+    
+    return output;
+  }
+  
+  /** This method takes three inputs: firstSound (the first sound that will be first copied onto the calling object array), secondSound 
+    * (the second sound that will be first copied onto the calling object array), switchPoint (the point at which the array will switch the playing from
+    * firstSound to secondSound. This method will modify the calling object . The method will overwrite the calling object with the content of 
+    * Sound firstSound and then of Sound secondSound. This method will not return anything. 
+   */
+  public void concatenateSound (Sound firstSound, Sound secondSound, int switchPoint)
+  {
+    SoundSample[] orgArray= this.getSamples(); 
+    SoundSample[] firstSoundArray = firstSound.getSamples();
+    SoundSample[] secondSoundArray = secondSound.getSamples();
+    
+    if (switchPoint > firstSoundArray.length) 
+    { 
+      for (int i = 0; i < orgArray.length; i++) 
+      {
+        if ( i < firstSoundArray.length) 
+        {
+          orgArray[i].setValue(firstSoundArray[i].getValue()); 
+        } 
+        else if ( i < firstSoundArray.length + secondSoundArray.length)
+        { 
+          orgArray[i].setValue(secondSoundArray[i-firstSoundArray.length].getValue());
+        } 
+        else 
+        {
+          orgArray[i].setValue(0);
+        } 
+      } 
+    } 
+    else 
+    { 
+      for (int i = 0; i < orgArray.length; i++) 
+      { 
+        if ( i < switchPoint) 
+        { 
+          orgArray[i].setValue(firstSoundArray[i].getValue()); 
+        } 
+        else if ( i < switchPoint + secondSoundArray.length) 
+        { 
+          orgArray[i].setValue(secondSoundArray[i-switchPoint].getValue());
+        }
+        else 
+        {
+          orgArray[i].setValue(0);
+        } 
+      } 
+    } 
+  }
+  
+  
+  /** This method will make a copy of the calling object and will call the copy original. this method will reverse the sound of the calling object by setting 
+    * the value from index 0 all the way to the end of the calling object. the value will be the last sound value of the sound. The variable targetindex 
+    * is where the value will be modified, while sourceindexis the very last value decrementing. The method will return the modified copy. 
+   */
+  public Sound reverseSound()
+  {
+    Sound original = new Sound(this.getFileName());
+    int length = this.getLength(); 
+    
+    for ( int targetIndex = 0, sourceIndex = length -1; targetIndex < length && sourceIndex > 0; targetIndex ++, sourceIndex--) 
+    { 
+      original.setSampleValueAt(targetIndex, this.getSampleValueAt(sourceIndex)); 
+    } 
+    return original; 
+  }
+  
+  /** This method will first use the method reverse to modify the calling object, and combine the noriginal sound concatenated with 
+    * reversed version of the same sound. The variable reverse is the modifed sound that is reversed. the variable target is the place where the reverse sound
+    * and the original sound will combine to make one, therefore the length is doubled. This method will return the variable target, which is the one with 
+    * the reverse sound and original sound. 
+   */
+  public Sound palindromeSound()
+  {
+    Sound reverse = new Sound(this.reverseSound());
+    Sound target = new Sound(this.getLength()*2);
+    
+    target.concatenateSound(this, reverse, this.getLength());
+    
+    return target;   
+  }
+  
+} // this } is the end of class Sound, put all new methods before this
