@@ -1,0 +1,78 @@
+import java.util.Scanner;  // Do not remove this line
+
+public class PSA7PictureTester
+{
+  /* This method first makes a copy of the calling object (called pic), and lets the user inputs three things: x coordinate of lower left corner, 
+   * y coordinate of the lower left corner, and the length of the square respectively. The method will take the three inputs and first filp of square with the 
+   * coordinates and the length horizontally three times, and does the same to flip the square vertically. The variable name size is the length of the
+   * square which will be flipped either vertically or horizontally. 
+   */
+  public static void main( String[] args )
+  {
+    
+    Picture pic = new Picture( FileChooser.pickAFile() );
+    pic.show();
+    
+    int x, y, size;
+    int width = pic.getWidth();
+    int height = pic.getHeight();
+    
+    System.out.println( "Picture loaded with width=" + width +
+                       " and height=" + height );
+    
+    Scanner reader = new Scanner( System.in );
+    
+    
+    for (int i = 0; i < 3; i++) 
+     {  
+     System.out.print("Please enter the x, y coordinates of lower left corner ");
+     System.out.println( "of the box to flip horizontally, x first:" );
+     x = reader.nextInt();
+     y = reader.nextInt();
+     System.out.println( "Enter the size of the box to flip:" );
+     size = reader.nextInt();
+     
+     if (x < 0 || y - size < 0 || x+size > width || y > height)
+     { 
+     System.out.println( "Part or all of this range is out of bounds.  Please ensure the whole range is within width: " + pic.getWidth() + " and height: " + pic.getHeight()); 
+     System.out.print("Please enter the x, y coordinates of lower left corner ");
+     System.out.println( "of the box to flip horizontally, x first:" );
+     x = reader.nextInt();
+     y = reader.nextInt();
+     System.out.println( "Enter the size of the box to flip:" );
+     size = reader.nextInt();
+     }
+     System.out.println( "You entered x=" + x + " y=" + y + " size=" + size );
+     
+     pic.flipHorizontalSquare(x , y, size); 
+     pic.repaint(); 
+     
+     }
+     
+    
+    for (int i = 0; i < 3; i++) 
+    {  
+      System.out.print("Please enter the x, y coordinates of lower left corner ");
+      System.out.println( "of the box to flip vertically, x first:" );
+      x = reader.nextInt();
+      y = reader.nextInt();
+      System.out.println( "Enter the size of the box to flip:" );
+      size = reader.nextInt();
+      
+      if (x < 0 || y - size < 0 || x+size > width || y > height)
+      { 
+        System.out.println( "Part or all of this range is out of bounds.  Please ensure the whole range is within width: " + pic.getWidth() + " and height: " + pic.getHeight()); 
+        System.out.print("Please enter the x, y coordinates of lower left corner ");
+        System.out.println( "of the box to flip horizontally, x first:" );
+        x = reader.nextInt();
+        y = reader.nextInt();
+        System.out.println( "Enter the size of the box to flip:" );
+        size = reader.nextInt();
+      }
+      System.out.println( "You entered x=" + x + " y=" + y + " size=" + size );
+      
+      pic.flipVerticalSquare(x , y, size); 
+      pic.repaint(); 
+    }
+  }
+}
