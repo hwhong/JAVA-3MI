@@ -1,5 +1,8 @@
 What I've learned from doing the project? 
-- This project was really challenging till the end. This project came my partner and I the chance to familiarize ourselves with the concept of x and y coordinate in terms of computer science. Though the actual programming was not that challenging, it was the fact that we had to know which coordinate is changing and how it is changing (e.g flipHorizontal and flipVertical). Overall, I also learned how how grey is created (by adding all green, red, and blue components and divided by three).
+- This project was really challenging till the end. 
+This project came my partner and I the chance to familiarize ourselves with the concept of x and y coordinate in terms of computer science. 
+Though the actual programming was not that challenging, it was the fact that we had to know which coordinate is changing and how it is changing (e.g flipHorizontal and flipVertical).
+Overall, I also learned how how grey is created (by adding all green, red, and blue components and divided by three).
 
 What were the obstacles that I've encountered while coding for this assignment? 
 - I think the most trouble with knowing the x and y coordinate system. 
