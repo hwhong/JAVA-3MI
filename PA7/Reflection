@@ -1,0 +1,11 @@
+What I've learned from doing the project? 
+- This project was a huge step up from the previous few projects, mainly because we delved into the manipulating sound. Similar
+to manipulating pixels, we also had to read from a sound file and get its values such as frequency and amplitude. Another 
+important thing that I learned was the concept of dynamically uses user's information to change the workings of the program, 
+(namely the scanner).
+
+What were the obstacles that I've encountered while coding for this assignment? 
+- concatenating the sound files and thinking of edge cases were quite a challenge. 
+
+Note to future Warren (lol)
+- mind blown by the fact that sound can also be an array. 
