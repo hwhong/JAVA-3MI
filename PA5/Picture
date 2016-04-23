@@ -1,0 +1,209 @@
+import java.awt.*;
+import java.awt.font.*;
+import java.awt.geom.*;
+import java.awt.image.BufferedImage;
+import java.text.*;
+import java.util.*;
+import java.util.List; // resolves problem with java.awt.List and java.util.List
+
+/**
+ * A class that represents a picture.  This class inherits from 
+ * SimplePicture and allows the student to add functionality to
+ * the Picture class.  
+ * 
+ * Copyright Georgia Institute of Technology 2004-2005
+ * @author Barbara Ericson ericson@cc.gatech.edu
+ */
+public class Picture extends SimplePicture 
+{
+  ///////////////////// constructors //////////////////////////////////
+  
+  /**
+   * Constructor that takes no arguments 
+   */
+  public Picture ()
+  {
+    /* not needed but use it to show students the implicit call to super()
+     * child constructors always call a parent constructor 
+     */
+    super();  
+  }
+  
+  /**
+   * Constructor that takes a file name and creates the picture 
+   * @param fileName the name of the file to create the picture from
+   */
+  public Picture(String fileName)
+  {
+    // let the parent class handle this fileName
+    super(fileName);
+  }
+  
+  /**
+   * Constructor that takes the width and height
+   * @param width the width of the desired picture
+   * @param height the height of the desired picture
+   */
+  public Picture(int width, int height)
+  {
+    // let the parent class handle this width and height
+    super(width,height);
+  }
+  
+  /**
+   * Constructor that takes a picture and creates a 
+   * copy of that picture
+   */
+  public Picture(Picture copyPicture)
+  {
+    // let the parent class do the copy
+    super(copyPicture);
+  }
+  
+  /**
+   * Constructor that takes a buffered image
+   * @param image the buffered image to use
+   */
+  public Picture(BufferedImage image)
+  {
+    super(image);
+  }
+  
+  ////////////////////// methods ///////////////////////////////////////
+  
+  /**
+   * Method to return a string with information about this picture.
+   * @return a string with information about the picture such as fileName,
+   * height and width.
+   */
+  public String toString()
+  {
+    String output = "Picture, filename " + getFileName() + 
+      " height " + getHeight() 
+      + " width " + getWidth();
+    return output; 
+  }
+  /**
+   * The method chromakeyBackgroundChange takes two inputs. The first input is the background image which is used to change the green screen of the calling 
+   * object(myselfSourceImage). The second input is the color that will be replaced. In the example of this PSA, the replaced color is green, therefore the 
+   * inputted color that we place into the parameter when we call this method wil be green. We declared the variables source1X and source2X to keep 
+   * track of which image pixel we are using. And the declared pixel tPixel is just the tagreted pixel that is being replaced. Since we have to make this 
+   * method versatile, meaning that it would change the 'green' screen regardless of the color predominately making up the green screen, we created the if and 
+   * else if statements to make sure if the passing colors are either red or blue, the "green" screen will still color to our desired background. The pixel 
+   * variable s1Pixel is the original picture that is not modified. Pixel variable tPixel is the blank canvas on which we copied onto. Pixel variable s2Pixel is
+   * the background pixel of the picture we are copying onto the blank canvas. 
+   */
+  public Picture chromakeyBackgroundChange(Picture background, Color replaceColor)
+  {  
+    Picture newCanvas = new Picture(this.getWidth(), this.getHeight());
+    Pixel s1Pixel = null;
+    Pixel tPixel = null; 
+    Pixel s2Pixel = null; 
+    
+    
+    for (int source1X = 0, source2X = 0, targetX = 0 ; source1X < this.getWidth(); source1X++, source2X++, targetX++) 
+    {
+      for (int source1Y = 0, source2Y = 0, targetY = 0 ; source1Y < this.getHeight(); source1Y++, source2Y++, targetY++) 
+      {
+        s1Pixel = this.getPixel(source1X,source1Y);
+        s2Pixel = background.getPixel(source2X,source2Y);
+        tPixel = newCanvas.getPixel(targetX, targetY);       
+        
+        if (replaceColor == Color.green) 
+        { 
+          if (s1Pixel.getGreen() > s1Pixel.getBlue()+s1Pixel.getRed()) 
+          {
+            tPixel.setColor(s2Pixel.getColor());
+          }
+          else 
+          {
+            tPixel.setColor(s1Pixel.getColor());
+          }
+        }
+        
+        else if (replaceColor == Color.blue) 
+        { 
+          if (s1Pixel.getBlue() > s1Pixel.getGreen()+s1Pixel.getRed()) 
+          {
+            tPixel.setColor(s2Pixel.getColor());
+          }
+          else 
+          {
+            tPixel.setColor(s1Pixel.getColor());
+          }
+        }
+        
+        else if (replaceColor == Color.red) 
+        { 
+          if (s1Pixel.getRed() > s1Pixel.getGreen()+s1Pixel.getBlue()) 
+          {
+            tPixel.setColor(s2Pixel.getColor());
+          }
+          else 
+          {
+            tPixel.setColor(s1Pixel.getColor());
+          }
+        }        
+      }   
+    }
+    return newCanvas;
+  }
+  
+  /**
+   *This method aims to change the color of the shirt to our desired image. In this method we directly changed the modified picture from the
+   *previous calling object by changing the color of the shirt to the image we want. We delcared the four pixel variables. originalpix was used to make sure 
+   * that we are only changing the pixel within the square area of the shirt. The pixel variable shirtPix is the pxiels of the shirt image we are trying to 
+   * print onto the shirt. The pixel variable changedPix is the pixels of the calling object, which is in this case myChangedBackgroundImage. The final pixel 
+   * variable targetpix is the pixels we are tyring to copy the pictures on. The parameter of this method is entered by first exploring the area of the shirt 
+   * and then measuring how long and tall the shirt area is. The first two four loops are used to copy the original pixels onto the blank canvas, and then we 
+   * reset the pixels to null again, so that we can reuse these variables. The we proceed to change the pixels of the shirt by limiting the area of the square. 
+   * we made the distance between each pixel 40 because the color of the shirt varies by a large amount. 
+   */
+  
+  public Picture chromakeyShirtChange(Picture shirt, Picture original, Color oldShirtColor, int startX, int startY, int width, int height)
+  { 
+    Picture newCanvas = new Picture(this.getWidth(), this.getHeight());
+    Pixel originalPix = null; 
+    Pixel shirtPix = null;
+    Pixel changedPix = null;
+    Pixel targetPix = null; 
+    
+    for (int changedX = 0, targetX = 0; changedX < this.getWidth(); changedX++, targetX++)
+    {
+      for (int changedY = 0, targetY = 0; changedY < this.getHeight(); changedY++, targetY++)
+      {
+        changedPix = this.getPixel(changedX, changedY);
+        targetPix = newCanvas.getPixel(targetX, targetY);
+        targetPix.setColor(changedPix.getColor());
+      } 
+    }
+    
+    changedPix = null;
+    targetPix = null; 
+    
+    for (int originalX = startX, shirtX = 0, changedX = startX, targetX = startX; originalX <startX + width; originalX++, shirtX++, changedX++, targetX++) 
+    {
+      for (int originalY = startY, shirtY = 0, changedY = startY, targetY = startY; originalY <startY + height; originalY++, shirtY++, changedY++, targetY++) 
+      {
+        originalPix = original.getPixel(originalX,originalY);
+        shirtPix = shirt.getPixel(shirtX,shirtY);
+        changedPix = this.getPixel(changedX, changedY);
+        targetPix = newCanvas.getPixel(targetX, targetY);
+        
+        if (oldShirtColor == Color.darkGray) 
+        {
+          if (Math.abs(originalPix.getRed() - originalPix.getGreen()) < 40 && Math.abs(originalPix.getRed() - originalPix.getBlue()) < 
+              40 && Math.abs(originalPix.getBlue() - originalPix.getGreen()) < 40 ) 
+          {
+            targetPix.setColor(shirtPix.getColor());
+          }
+          else 
+          {
+            targetPix.setColor(changedPix.getColor());
+          }
+        }
+      } 
+    }
+    return newCanvas;
+  }
+}
